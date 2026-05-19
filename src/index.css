@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+body {
+  background-color: #f8fafc;
+}
+
+/* Utilities Khusus Cetak (Print) Modul Ajar */
+@media print {
+  /* Sembunyikan SEMUA elemen secara total di halaman */
+  body * {
+    visibility: hidden;
+  }
+  
+  /* Tampilkan HANYA area print-preview dan isinya */
+  .print-preview-area,
+  .print-preview-area * {
+    visibility: visible;
+  }
+
+  /* Secara khusus sembunyikan elemen ber-class print:hidden di dalam area cetak */
+  .print-preview-area .print\:hidden,
+  .print-preview-area button {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Posisikan area cetak di pojok kiri atas halaman kertas */
+  .print-preview-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  body {
+    background-color: #ffffff !important;
+  }
+
+  /* Cegah potongan halaman yang tidak rapi */
+  .break-inside-avoid {
+    break-inside: avoid;
+  }
+}

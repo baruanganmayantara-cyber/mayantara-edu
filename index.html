@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1e3a8a" />
+
+    <!-- SEO -->
+    <title>Mayantara Edu — Sistem Manajemen Informasi Sekolah</title>
+    <meta name="description" content="Mayantara Edu adalah sistem manajemen informasi sekolah berbasis web untuk mengelola data siswa, guru, presensi, jurnal mengajar, dan laporan secara digital." />
+    <meta name="keywords" content="sistem informasi sekolah, absensi siswa, jurnal mengajar, portal guru, manajemen sekolah" />
+    <meta name="author" content="Mayantara Edu" />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="MayantaraEdu" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Mayantara Edu — Sistem Manajemen Informasi Sekolah" />
+    <meta property="og:description" content="Platform digital pengelolaan sekolah — presensi, jurnal, laporan, dalam satu sistem." />
+    <meta property="og:type" content="website" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('SW registered:', reg.scope))
+            .catch(err => console.log('SW error:', err));
+        });
+      }
+    </script>
+  </body>
+</html>

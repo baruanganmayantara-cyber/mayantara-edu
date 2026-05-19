@@ -1,0 +1,274 @@
+========================================================================
+            PANDUAN LENGKAP INSTALASI & DEPLOYMENT - MAYANTARA EDU
+========================================================================
+
+Dokumen ini berisi panduan langkah demi langkah untuk menjalankan aplikasi Mayantara Edu 
+di lingkungan lokal (Development) serta mendeploy ke server produksi Vercel baik 
+menggunakan Terminal (CLI) maupun secara Manual (Dashboard).
+
+------------------------------------------------------------------------
+A. PERSYARATAN UTAMA (PREREQUISITES)
+------------------------------------------------------------------------
+Sebelum memulai, pastikan perangkat Anda telah terinstal:
+1. Node.js (Versi 18 LTS atau lebih baru disarankan)
+2. npm (Node Package Manager, otomatis terinstal bersama Node.js)
+3. Akun Supabase (untuk database dan autentikasi)
+4. Akun Vercel (untuk deployment hosting web)
+
+------------------------------------------------------------------------
+B. INSTALASI DI LINGKUNGAN LOKAL (DEVELOPMENT - TERMINAL)
+------------------------------------------------------------------------
+Ikuti langkah-langkah berikut di terminal (PowerShell, Command Prompt, atau Bash):
+
+1. Masuk ke folder proyek:
+   Pastikan terminal Anda sudah berada di dalam direktori proyek "mayantara-edu".
+
+2. Instalasi Paket Dependensi (Dependencies):
+   Jalankan perintah berikut untuk mengunduh semua library yang dibutuhkan (React, Vite, Tailwind, Lucide Icons, dll):
+   Perintah:
+   $ npm install
+
+3. Konfigurasi Variabel Lingkungan (Environment Variables):
+   - Di root direktori proyek, buat atau edit file bernama ".env" (tanpa tanda kutip).
+   - Isi file ".env" dengan kredensial Supabase Anda sebagai berikut:
+     VITE_SUPABASE_URL="https://your-supabase-project-id.supabase.co"
+     VITE_SUPABASE_ANON_KEY="your-anon-public-key"
+
+4. Jalankan Aplikasi secara Lokal (Development Server):
+   Perintah:
+   $ npm run dev
+   - Buka browser Anda dan akses alamat yang tertera di terminal, biasanya: http://localhost:5173
+
+5. Membuat Build Produksi Lokal (Opsional):
+   Jika Anda ingin memverifikasi kesiapan kompilasi aplikasi sebelum deploy:
+   Perintah:
+   $ npm run build
+
+------------------------------------------------------------------------
+C. DEPLOYMENT KE VERCEL PRODUKSI (MENGGUNAKAN TERMINAL - CLI)
+------------------------------------------------------------------------
+Cara tercepat untuk mendeploy langsung dari komputer Anda melalui baris perintah:
+
+1. Instal Vercel CLI secara Global (jika belum pernah):
+   Perintah:
+   $ npm install -g vercel
+
+2. Login ke Akun Vercel Anda:
+   Perintah:
+   $ vercel login
+   - Ikuti instruksi di browser untuk memverifikasi login Anda.
+
+3. Hubungkan Proyek ke Vercel (Inisialisasi):
+   Jalankan perintah ini di dalam folder proyek Anda:
+   Perintah:
+   $ vercel
+   - Jawab pertanyaan konfigurasi (biasanya tekan Enter untuk menyetujui opsi default).
+   - Perintah ini akan membuat tautan proyek di dashboard Vercel Anda.
+
+4. Daftarkan Environment Variables di Dashboard Vercel:
+   - Buka link Vercel Dashboard proyek Anda.
+   - Pergi ke menu: Settings -> Environment Variables.
+   - Tambahkan 2 variabel berikut:
+     * Key: VITE_SUPABASE_URL       (Value: URL Supabase Anda)
+     * Key: VITE_SUPABASE_ANON_KEY  (Value: Kunci Anon Key Supabase Anda)
+
+5. Lakukan Deployment Produksi Final:
+   Setelah variabel lingkungan disetel, lakukan kompilasi dan deploy produksi secara menyeluruh:
+   Perintah:
+   $ npm run build
+   $ vercel --prod
+
+------------------------------------------------------------------------
+D. DEPLOYMENT KE VERCEL PRODUKSI (MANUAL VIA DASHBOARD & GITHUB)
+------------------------------------------------------------------------
+Metode paling direkomendasikan karena mendukung Continuous Integration (CI/CD) 
+otomatis setiap kali Anda melakukan push kode baru.
+
+1. Hubungkan Proyek Anda ke Repositori Git:
+   - Buat repositori baru di Github, GitLab, atau Bitbucket.
+   - Push kode proyek Mayantara Edu Anda ke repositori tersebut:
+     $ git init
+     $ git add .
+     $ git commit -m "Initial commit Mayantara Edu"
+     $ git branch -M main
+     $ git remote add origin <link-repositori-anda>
+     $ git push -u origin main
+
+2. Masuk ke Dashboard Vercel:
+   - Buka website https://vercel.com dan lakukan login.
+
+3. Buat Proyek Baru di Vercel:
+   - Klik tombol "Add New..." lalu pilih "Project".
+   - Vercel akan menampilkan daftar repositori Git Anda.
+   - Cari repositori proyek "mayantara-edu" Anda, lalu klik "Import".
+
+4. Atur Parameter Konfigurasi Proyek:
+   - Framework Preset: Pilih "Vite" (Vercel biasanya mendeteksi secara otomatis).
+   - Root Directory: "./" (biarkan default).
+
+5. Masukkan Environment Variables (PENTING):
+   - Gulir ke bawah ke bagian "Environment Variables".
+   - Tambahkan dua variabel kunci berikut:
+     * Name: VITE_SUPABASE_URL
+       Value: https://fefbcitdvdfiiglfrrch.supabase.co
+     * Name: VITE_SUPABASE_ANON_KEY
+       Value: sb_publishable_SByBij5fz9LK2BrX70nWnQ_0syWPhs5
+     - Klik tombol "Add" setelah mengisi masing-masing variabel.
+
+6. Mulai Deploy:
+   - Klik tombol "Deploy".
+   - Tunggu sekitar 1-2 menit hingga proses build selesai.
+   - Selamat! Aplikasi Anda sekarang aktif secara online secara global dengan SSL (HTTPS).
+
+------------------------------------------------------------------------
+E. PEMELIHARAAN & PEMBARUAN (MAINTENANCE)
+------------------------------------------------------------------------
+* Jika Anda mendeploy secara manual via Github: Setiap kali Anda melakukan `git push` ke branch utama (main/master), Vercel akan otomatis melakukan pembangunan ulang (rebuild) dan memperbarui website aktif Anda tanpa downtime.
+* Jika Anda mendeploy via terminal CLI: Jalankan `npm run build` diikuti oleh `vercel --prod` setiap kali Anda selesai melakukan perubahan kode di lokal.
+
+------------------------------------------------------------------------
+F. SKEMA DATABASE & SQL QUERY (UNTUK SUPABASE SQL EDITOR)
+------------------------------------------------------------------------
+Salin skrip SQL DDL di bawah ini dan jalankan langsung di dalam "SQL Editor" 
+di dashboard Supabase Anda untuk membentuk seluruh 12 tabel database 
+beserta relasi dan tipe datanya secara otomatis:
+
+```sql
+-- 1. Tabel admin_users (Untuk Autentikasi Admin Portal)
+CREATE TABLE IF NOT EXISTS admin_users (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL
+);
+
+-- 2. Tabel guru (Untuk Akun & Profil Pendidik)
+CREATE TABLE IF NOT EXISTS guru (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  nama_lengkap TEXT NOT NULL,
+  nip TEXT UNIQUE,
+  username TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  foto TEXT,
+  nomor_telepon TEXT
+);
+
+-- 3. Tabel kelas (Tingkat & Nama Rombel)
+CREATE TABLE IF NOT EXISTS kelas (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  tingkat TEXT NOT NULL,
+  nama_rombel TEXT NOT NULL,
+  wali_kelas_id UUID REFERENCES guru(id) ON DELETE SET NULL
+);
+
+-- 4. Tabel mata_pelajaran (Kurikulum)
+CREATE TABLE IF NOT EXISTS mata_pelajaran (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  nama TEXT NOT NULL,
+  kode TEXT UNIQUE
+);
+
+-- 5. Tabel mapel_guru (Relasi Banyak-ke-Banyak Guru dan Mapel)
+CREATE TABLE IF NOT EXISTS mapel_guru (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  mapel_id UUID REFERENCES mata_pelajaran(id) ON DELETE CASCADE,
+  guru_id UUID REFERENCES guru(id) ON DELETE CASCADE,
+  UNIQUE(mapel_id, guru_id)
+);
+
+-- 6. Tabel siswa (Daftar Murid di Tiap Kelas)
+CREATE TABLE IF NOT EXISTS siswa (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  nisn TEXT UNIQUE,
+  nama_lengkap TEXT NOT NULL,
+  jenis_kelamin TEXT CHECK (jenis_kelamin IN ('L', 'P')),
+  kelas_id UUID REFERENCES kelas(id) ON DELETE CASCADE
+);
+
+-- 7. Tabel pengumuman (Dashboard Guru & Portal)
+CREATE TABLE IF NOT EXISTS pengumuman (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  judul TEXT NOT NULL,
+  konten TEXT NOT NULL,
+  status TEXT DEFAULT 'draft'
+);
+
+-- 8. Tabel pengaturan (Konfigurasi Aplikasi)
+CREATE TABLE IF NOT EXISTS pengaturan (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  key TEXT UNIQUE NOT NULL,
+  value TEXT
+);
+
+-- 9. Tabel jadwal_mengajar (Slot Jadwal KBM)
+CREATE TABLE IF NOT EXISTS jadwal_mengajar (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  kelas_id UUID REFERENCES kelas(id) ON DELETE CASCADE,
+  mapel_id UUID REFERENCES mata_pelajaran(id) ON DELETE CASCADE,
+  guru_id UUID REFERENCES guru(id) ON DELETE CASCADE,
+  hari TEXT NOT NULL,
+  jam_mulai TEXT NOT NULL,
+  jam_selesai TEXT NOT NULL
+);
+
+-- 10. Tabel jurnal_mengajar (Catatan KBM harian Guru)
+CREATE TABLE IF NOT EXISTS jurnal_mengajar (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  jadwal_id UUID REFERENCES jadwal_mengajar(id) ON DELETE CASCADE,
+  guru_id UUID REFERENCES guru(id) ON DELETE CASCADE,
+  tanggal DATE NOT NULL,
+  materi_sekarang TEXT NOT NULL,
+  materi_selanjutnya TEXT NOT NULL,
+  jumlah_jam INT DEFAULT 2
+);
+
+-- 11. Tabel presensi_siswa (Data Kehadiran Murid per Tatap Muka)
+CREATE TABLE IF NOT EXISTS presensi_siswa (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  jurnal_id UUID REFERENCES jurnal_mengajar(id) ON DELETE CASCADE,
+  siswa_id UUID REFERENCES siswa(id) ON DELETE CASCADE,
+  status TEXT NOT NULL CHECK (status IN ('Hadir', 'Alpa', 'Izin', 'Sakit')),
+  keterangan TEXT,
+  UNIQUE(jurnal_id, siswa_id)
+);
+
+-- 12. Tabel modul_ajar (Modul KTSP / Kurikulum Merdeka - Deep Learning)
+CREATE TABLE IF NOT EXISTS modul_ajar (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  guru_id UUID REFERENCES guru(id) ON DELETE CASCADE,
+  kelas_id UUID REFERENCES kelas(id) ON DELETE CASCADE,
+  mapel_id UUID REFERENCES mata_pelajaran(id) ON DELETE CASCADE,
+  semester TEXT DEFAULT '1',
+  alokasi_waktu TEXT NOT NULL,
+  fase TEXT NOT NULL,
+  p3 JSONB DEFAULT '[]'::jsonb,
+  sarana TEXT,
+  target_peserta TEXT,
+  mindful_activity TEXT,
+  kesiapan_emosi TEXT,
+  meaningful_challenge TEXT,
+  meaningful_benefit TEXT,
+  joyful_strategy JSONB DEFAULT '[]'::jsonb,
+  diferensiasi_tugas JSONB DEFAULT '[]'::jsonb,
+  kegiatan_pembelajaran TEXT,
+  asesmen JSONB DEFAULT '[]'::jsonb,
+  drive_link TEXT,
+  lkpd TEXT,
+  status TEXT DEFAULT 'draft'
+);
+```
+
+=======================================================================
+             TERIMA KASIH - MAYANTARA EDU PIONEER TEAM
+=======================================================================
