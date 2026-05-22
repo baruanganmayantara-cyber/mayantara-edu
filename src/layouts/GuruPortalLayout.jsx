@@ -95,7 +95,7 @@ export default function GuruPortalLayout() {
           <div className="mt-4 text-center">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-black text-yellow-400 text-xs font-black rounded-full tracking-widest uppercase border-2 border-black">
               <span className="w-2 h-2 rounded-full bg-yellow-400 animate-pulse"></span>
-              v1.0.0 Production
+              v1.0.1 Production
             </span>
           </div>
         </div>
@@ -115,8 +115,8 @@ export default function GuruPortalLayout() {
               <div className="flex items-center gap-1.5 mt-0.5">
                 <p className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Mayantara Edu</p>
                 <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-black text-yellow-400 text-[8px] font-black rounded-full">
-                  <span className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></span>
-                  v1.0.0
+                   <span className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></span>
+                  v1.0.1
                 </span>
               </div>
             </div>
