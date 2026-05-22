@@ -7,6 +7,7 @@ import DashboardGuru from './pages/GuruPortal/DashboardGuru';
 import ProfilGuru from './pages/GuruPortal/ProfilGuru';
 import LaporanGuruPortal from './pages/GuruPortal/LaporanGuruPortal';
 import ModulAjar from './pages/GuruPortal/ModulAjar';
+import AsesmenSiswa from './pages/GuruPortal/AsesmenSiswa';
 import Dashboard from './pages/Dashboard';
 import Kelas from './pages/Kelas';
 import MataPelajaran from './pages/MataPelajaran';
@@ -67,6 +68,7 @@ function App() {
         <Route path="/portal-guru" element={<ProtectedGuruRoute><GuruPortalLayout /></ProtectedGuruRoute>}>
           <Route index element={<DashboardGuru />} />
           <Route path="modul-ajar" element={<ModulAjar />} />
+          <Route path="asesmen" element={<AsesmenSiswa />} />
           <Route path="laporan" element={<LaporanGuruPortal />} />
           <Route path="profil" element={<ProfilGuru />} />
         </Route>

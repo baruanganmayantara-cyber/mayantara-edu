@@ -114,28 +114,48 @@ export default function LaporanSiswa() {
   const namaKelasFilter = selectedKelasObj ? `${selectedKelasObj.tingkat}-${selectedKelasObj.nama_rombel}` : 'Semua_Kelas';
 
   const exportToCSV = () => {
-    let csvContent = "data:text/csv;charset=utf-8,";
+    // Helper to format cells for Excel
+    const formatCell = (val) => {
+      if (val === null || val === undefined) return '""';
+      const str = val.toString().replace(/"/g, '""');
+      // If it looks like a number/code or has date separators, force as text formula
+      if (/^[0-9]+$/.test(str) || /^\d{2}-\d{2}-\d{4}$/.test(str)) {
+        return `"=""${str}"""`;
+      }
+      return `"${str}"`;
+    };
+
+    let csvContent = "";
     if (viewMode === 'harian') {
       csvContent += "Tanggal,Nama Siswa,Kelas,Mata Pelajaran,Status,Keterangan\n";
       filteredSiswa.forEach(row => {
-        const tgl = formatTanggal(row.tanggal_jurnal?.tanggal);
-        const nm = row.siswa?.nama_lengkap || '-';
-        const kls = `${row.tanggal_jurnal?.jadwal?.kelas?.tingkat}-${row.tanggal_jurnal?.jadwal?.kelas?.nama_rombel}`;
-        const mapel = row.tanggal_jurnal?.jadwal?.mata_pelajaran?.nama || '-';
-        const st = row.status;
-        const ket = row.keterangan || '';
-        csvContent += `"${tgl}","${nm}","${kls}","${mapel}","${st}","${ket}"\n`;
+        const tgl = formatCell(formatTanggal(row.tanggal_jurnal?.tanggal));
+        const nm = formatCell(row.siswa?.nama_lengkap || '-');
+        const kls = formatCell(`${row.tanggal_jurnal?.jadwal?.kelas?.tingkat}-${row.tanggal_jurnal?.jadwal?.kelas?.nama_rombel}`);
+        const mapel = formatCell(row.tanggal_jurnal?.jadwal?.mata_pelajaran?.nama || '-');
+        const st = formatCell(row.status);
+        const ket = formatCell(row.keterangan || '');
+        csvContent += `${tgl},${nm},${kls},${mapel},${st},${ket}\n`;
       });
     } else {
       csvContent += "Nama Siswa,Kelas,Total Pertemuan,Hadir,Sakit,Izin,Alpa,Persentase Hadir (%)\n";
       rekapSiswaList.forEach(row => {
-        csvContent += `"${row.nama}","${row.kelas}",${row.total},${row.hadir},${row.sakit},${row.izin},${row.alpa},${row.persentase}%\n`;
+        const nm = formatCell(row.nama);
+        const kls = formatCell(row.kelas);
+        const total = formatCell(row.total);
+        const hadir = formatCell(row.hadir);
+        const sakit = formatCell(row.sakit);
+        const izin = formatCell(row.izin);
+        const alpa = formatCell(row.alpa);
+        const persentase = formatCell(`${row.persentase}%`);
+        csvContent += `${nm},${kls},${total},${hadir},${sakit},${izin},${alpa},${persentase}\n`;
       });
     }
 
-    const encodedUri = encodeURI(csvContent);
+    const bom = new Uint8Array([0xEF, 0xBB, 0xBF]); // UTF-8 BOM
+    const blob = new Blob([bom, csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
+    link.href = URL.createObjectURL(blob);
     link.setAttribute("download", `Laporan_${namaKelasFilter}_${viewMode}_${startDate}.csv`);
     document.body.appendChild(link);
     link.click();

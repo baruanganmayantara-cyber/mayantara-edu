@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CalendarDays, Megaphone, Clock, MapPin, BookOpen, AlertCircle, X, CheckCircle, PenTool, LayoutGrid, FileText, User as UserIcon } from 'lucide-react';
+import { CalendarDays, Megaphone, Clock, MapPin, BookOpen, AlertCircle, X, CheckCircle, PenTool, LayoutGrid, FileText, User as UserIcon, BookMarked, Award } from 'lucide-react';
 import { supabase } from '../../lib/supabaseClient';
 import { useNavigate } from 'react-router-dom';
 
@@ -287,7 +287,7 @@ export default function DashboardGuru() {
               <h3 className="text-xl font-black uppercase text-black">Menu Utama</h3>
             </div>
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
               {/* Tombol Absensi */}
               <button 
                 onClick={() => setViewMode('jadwal')}
@@ -297,6 +297,28 @@ export default function DashboardGuru() {
                   <PenTool className="w-6 h-6 text-black" />
                 </div>
                 <span className="font-black uppercase text-sm text-center leading-tight">Isi<br/>Presensi</span>
+              </button>
+
+              {/* Tombol Modul Ajar */}
+              <button 
+                onClick={() => navigate('/portal-guru/modul-ajar')}
+                className="bg-violet-300 hover:bg-violet-400 border-4 border-black rounded-2xl p-4 flex flex-col items-center justify-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:translate-x-1 active:shadow-none transition-all cursor-pointer aspect-square"
+              >
+                <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                  <BookMarked className="w-6 h-6 text-black" />
+                </div>
+                <span className="font-black uppercase text-sm text-center leading-tight">Modul<br/>Ajar</span>
+              </button>
+
+              {/* Tombol Asesmen & Nilai */}
+              <button 
+                onClick={() => navigate('/portal-guru/asesmen')}
+                className="bg-orange-300 hover:bg-orange-400 border-4 border-black rounded-2xl p-4 flex flex-col items-center justify-center gap-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:translate-x-1 active:shadow-none transition-all cursor-pointer aspect-square"
+              >
+                <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                  <Award className="w-6 h-6 text-black" />
+                </div>
+                <span className="font-black uppercase text-sm text-center leading-tight">Asesmen &<br/>Nilai</span>
               </button>
 
               {/* Tombol Laporan */}

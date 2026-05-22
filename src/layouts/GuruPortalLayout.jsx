@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { LogOut, BookOpen, Home, FileText, User as UserIcon, BookMarked } from 'lucide-react';
+import { LogOut, BookOpen, Home, FileText, User as UserIcon, BookMarked, Award } from 'lucide-react';
 
 export default function GuruPortalLayout() {
   const navigate = useNavigate();
@@ -37,6 +37,7 @@ export default function GuruPortalLayout() {
   const navItems = [
     { name: 'Dasbor', icon: Home, path: '/portal-guru' },
     { name: 'Modul Ajar', icon: BookMarked, path: '/portal-guru/modul-ajar' },
+    { name: 'Asesmen & Nilai', icon: Award, path: '/portal-guru/asesmen' },
     { name: 'Laporan', icon: FileText, path: '/portal-guru/laporan' },
     { name: 'Profil', icon: UserIcon, path: '/portal-guru/profil' },
   ];

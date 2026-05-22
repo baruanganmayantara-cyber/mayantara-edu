@@ -255,6 +255,13 @@ CREATE TABLE IF NOT EXISTS modul_ajar (
   p3 JSONB DEFAULT '[]'::jsonb,
   sarana TEXT,
   target_peserta TEXT,
+  cp TEXT,
+  atp TEXT,
+  kktp TEXT,
+  prota TEXT,
+  promes TEXT,
+  materi TEXT,
+  buku_ajar TEXT,
   mindful_activity TEXT,
   kesiapan_emosi TEXT,
   meaningful_challenge TEXT,
@@ -267,6 +274,62 @@ CREATE TABLE IF NOT EXISTS modul_ajar (
   lkpd TEXT,
   status TEXT DEFAULT 'draft'
 );
+
+-- 13. Tabel nilai_asesmen (Portal Asesmen & Rekap Nilai Kurikulum Merdeka)
+CREATE TABLE IF NOT EXISTS nilai_asesmen (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  guru_id UUID REFERENCES guru(id) ON DELETE CASCADE,
+  kelas_id UUID REFERENCES kelas(id) ON DELETE CASCADE,
+  mapel_id UUID REFERENCES mata_pelajaran(id) ON DELETE CASCADE,
+  siswa_id UUID REFERENCES siswa(id) ON DELETE CASCADE,
+  jenis_asesmen TEXT CHECK (jenis_asesmen IN ('diagnostik', 'formatif', 'sumatif')) NOT NULL,
+  lingkup_materi TEXT NOT NULL,
+  skor INT CHECK (skor >= 0 AND skor <= 100) NOT NULL,
+  deskripsi TEXT DEFAULT '',
+  UNIQUE(siswa_id, mapel_id, jenis_asesmen, lingkup_materi)
+);
+
+-- =======================================================================
+-- DATA AWAL SEED UNTUK UJI COBA (LOGIN & TESTING DATA)
+-- =======================================================================
+
+-- A. Input Akun Admin (Untuk Login Admin Portal: Username 'admin', Password 'admin123')
+INSERT INTO admin_users (username, password)
+VALUES ('admin', 'admin123')
+ON CONFLICT (username) DO NOTHING;
+
+-- B. Input Akun Guru (Untuk Portal Guru: Gunakan NIP '19801234' untuk masuk)
+INSERT INTO guru (id, nama_lengkap, nip, username, password, nomor_telepon)
+VALUES 
+  ('0e5839d1-0c13-4f58-b4b8-e351e0750562', 'Budi Setiawan, S.Pd.', '19801234', 'budi', 'guru123', '08123456789')
+ON CONFLICT (username) DO NOTHING;
+
+-- C. Input Kelas Contoh
+INSERT INTO kelas (id, tingkat, nama_rombel, wali_kelas_id)
+VALUES 
+  ('33eed8a0-d9bd-45c6-b34a-51c1fcd2d2a7', 'Kelas 10', 'RPL 1', '0e5839d1-0c13-4f58-b4b8-e351e0750562')
+ON CONFLICT (id) DO NOTHING;
+
+-- D. Input Mata Pelajaran Contoh
+INSERT INTO mata_pelajaran (id, nama, kode)
+VALUES 
+  ('3f957aa5-773b-4c7b-88a6-f7d373c4a086', 'Dasar-dasar Pengembangan Perangkat Lunak', 'DDPPL10')
+ON CONFLICT (id) DO NOTHING;
+
+-- E. Hubungkan Mata Pelajaran dengan Guru di Tabel mapel_guru
+INSERT INTO mapel_guru (mapel_id, guru_id)
+VALUES 
+  ('3f957aa5-773b-4c7b-88a6-f7d373c4a086', '0e5839d1-0c13-4f58-b4b8-e351e0750562')
+ON CONFLICT DO NOTHING;
+
+-- F. Input Daftar Siswa Contoh (Untuk Menguji Presensi / Absensi)
+INSERT INTO siswa (nisn, nama_lengkap, jenis_kelamin, kelas_id)
+VALUES 
+  ('0098765431', 'Aditya Pratama', 'L', '33eed8a0-d9bd-45c6-b34a-51c1fcd2d2a7'),
+  ('0098765432', 'Clarissa Olivia', 'P', '33eed8a0-d9bd-45c6-b34a-51c1fcd2d2a7'),
+  ('0098765433', 'Rian Hidayat', 'L', '33eed8a0-d9bd-45c6-b34a-51c1fcd2d2a7')
+ON CONFLICT DO NOTHING;
 ```
 
 =======================================================================
